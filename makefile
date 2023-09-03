@@ -10,3 +10,9 @@ run/server:
 
 run/client:
 	go run ./client 0.0.0.0:50051
+
+kind/create:
+	kind create cluster --config k8s/kind.yaml
+
+kind/delete:
+	kind delete cluster

@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"os"
@@ -23,7 +25,16 @@ func addTask(c pb.TodoServiceClient, description string, dueDate time.Time) uint
 
 	res, err := c.AddTask(context.Background(), req)
 	if err != nil {
-		panic(err)
+		if s, ok := status.FromError(err); ok {
+			switch s.Code() {
+			case codes.InvalidArgument, codes.Internal:
+				log.Fatalf("%s: %s", s.Code().String(), s.Message())
+			default:
+				log.Fatalf("unexpected error: %v", err)
+			}
+		} else {
+			panic(err)
+		}
 	}
 
 	fmt.Printf("added task: %d\n", res.Id)
@@ -169,5 +180,9 @@ func main() {
 	fmt.Println("--------DELETE--------")
 	deleteTasks(c, delReq...)
 	printTasks(c)
+	fmt.Println("--------------------")
+
+	fmt.Println("--------ERROR--------")
+	addTask(c, "not empty", time.Now().Add(-5*time.Second))
 	fmt.Println("--------------------")
 }
