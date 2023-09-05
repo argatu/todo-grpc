@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/argatu/todo-grpc/proto/todo/v1"
 	"google.golang.org/grpc"
+	_ "google.golang.org/grpc/encoding/gzip"
 )
 
 func main() {

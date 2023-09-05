@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/encoding/gzip"
 	"google.golang.org/grpc/status"
 	"io"
 	"log"
@@ -137,6 +138,7 @@ func main() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithUnaryInterceptor(unaryAuthInterceptor),
 		grpc.WithStreamInterceptor(streamAuthInterceptor),
+		grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
 	}
 	conn, err := grpc.Dial(addr, opts...)
 
