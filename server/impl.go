@@ -39,6 +39,8 @@ func (s *server) ListTasks(_ *pb.ListTasksRequest, stream pb.TodoService_ListTas
 			switch ctx.Err() {
 			case context.Canceled:
 				log.Printf("request cancelled: %s", ctx.Err())
+			case context.DeadlineExceeded:
+				log.Printf("deadline exceeded: %s", ctx.Err())
 			default:
 			}
 			return ctx.Err()
