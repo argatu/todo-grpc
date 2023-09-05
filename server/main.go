@@ -29,7 +29,10 @@ func main() {
 		}
 	}(lis)
 
-	var opts []grpc.ServerOption
+	opts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(unaryAuthInterceptor),
+		grpc.StreamInterceptor(streamAuthInterceptor),
+	}
 	s := grpc.NewServer(opts...)
 
 	pb.RegisterTodoServiceServer(s, &server{

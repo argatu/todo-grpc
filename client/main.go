@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"io"
 	"log"
@@ -72,10 +71,7 @@ func printTasks(c pb.TodoServiceClient) {
 }
 
 func updateTask(c pb.TodoServiceClient, reqs ...*pb.UpdateTaskRequest) {
-	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "auth_token", "authd")
-
-	stream, err := c.UpdateTasks(ctx)
+	stream, err := c.UpdateTasks(context.Background())
 	if err != nil {
 		log.Fatalf("error while calling UpdateTask RPC: %v", err)
 	}
@@ -139,6 +135,8 @@ func main() {
 	addr := args[0]
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithUnaryInterceptor(unaryAuthInterceptor),
+		grpc.WithStreamInterceptor(streamAuthInterceptor),
 	}
 	conn, err := grpc.Dial(addr, opts...)
 
