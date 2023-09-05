@@ -42,8 +42,11 @@ func addTask(c pb.TodoServiceClient, description string, dueDate time.Time) uint
 }
 
 func printTasks(c pb.TodoServiceClient) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	req := &pb.ListTasksRequest{}
-	stream, err := c.ListTasks(context.Background(), req)
+	stream, err := c.ListTasks(ctx, req)
 	if err != nil {
 		log.Fatalf("error while calling ListTasks RPC: %v", err)
 	}
@@ -56,6 +59,11 @@ func printTasks(c pb.TodoServiceClient) {
 
 		if err != nil {
 			log.Fatalf("error while reading stream: %v", err)
+		}
+
+		if res.Overdue {
+			log.Println("CANCEL called")
+			cancel()
 		}
 
 		fmt.Println(res.Task.String(), "overdue: ", res.Overdue)

@@ -5,6 +5,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
+	"log"
 	"time"
 
 	pb "github.com/argatu/todo-grpc/proto/todo/v1"
@@ -30,7 +31,20 @@ func (s *server) AddTask(_ context.Context, req *pb.AddTaskRequest) (*pb.AddTask
 }
 
 func (s *server) ListTasks(_ *pb.ListTasksRequest, stream pb.TodoService_ListTasksServer) error {
+	ctx := stream.Context()
+
 	return s.d.getTasks(func(t any) error {
+		select {
+		case <-ctx.Done():
+			switch ctx.Err() {
+			case context.Canceled:
+				log.Printf("request cancelled: %s", ctx.Err())
+			default:
+			}
+			return ctx.Err()
+		case <-time.After(1 * time.Millisecond):
+		}
+
 		task := t.(*pb.Task)
 		overdue := task.DueDate != nil && task.Done && task.DueDate.AsTime().Before(time.Now().UTC())
 
