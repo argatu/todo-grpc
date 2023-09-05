@@ -1,6 +1,7 @@
 package main
 
 import (
+	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
 	"os"
@@ -30,7 +31,13 @@ func main() {
 		}
 	}(lis)
 
+	creds, err := credentials.NewServerTLSFromFile("./certs/server_cert.pem", "./certs/server_key.pem")
+	if err != nil {
+		log.Fatalf("failed to create credentials: %v", err)
+	}
+
 	opts := []grpc.ServerOption{
+		grpc.Creds(creds),
 		grpc.UnaryInterceptor(unaryAuthInterceptor),
 		grpc.StreamInterceptor(streamAuthInterceptor),
 	}
