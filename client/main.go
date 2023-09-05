@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"io"
 	"log"
@@ -42,7 +43,7 @@ func addTask(c pb.TodoServiceClient, description string, dueDate time.Time) uint
 }
 
 func printTasks(c pb.TodoServiceClient) {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	req := &pb.ListTasksRequest{}
@@ -71,7 +72,10 @@ func printTasks(c pb.TodoServiceClient) {
 }
 
 func updateTask(c pb.TodoServiceClient, reqs ...*pb.UpdateTaskRequest) {
-	stream, err := c.UpdateTasks(context.Background())
+	ctx := context.Background()
+	ctx = metadata.AppendToOutgoingContext(ctx, "auth_token", "authd")
+
+	stream, err := c.UpdateTasks(ctx)
 	if err != nil {
 		log.Fatalf("error while calling UpdateTask RPC: %v", err)
 	}

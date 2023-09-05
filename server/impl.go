@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"io"
 	"log"
@@ -58,6 +59,19 @@ func (s *server) ListTasks(_ *pb.ListTasksRequest, stream pb.TodoService_ListTas
 }
 
 func (s *server) UpdateTasks(stream pb.TodoService_UpdateTasksServer) error {
+	ctx := stream.Context()
+	md, _ := metadata.FromIncomingContext(ctx)
+	if t, ok := md["auth_token"]; ok {
+		switch {
+		case len(t) != 1:
+			return status.Error(codes.InvalidArgument, "auth_token should contain only one value")
+		case t[0] != "authd":
+			return status.Error(codes.Unauthenticated, "incorrect auth_token")
+		}
+	} else {
+		return status.Error(codes.Unauthenticated, "auth_token is missing")
+	}
+
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
