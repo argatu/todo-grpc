@@ -62,11 +62,6 @@ func printTasks(c pb.TodoServiceClient) {
 			log.Fatalf("error while reading stream: %v", err)
 		}
 
-		if res.Overdue {
-			log.Println("CANCEL called")
-			cancel()
-		}
-
 		fmt.Println(res.Task.String(), "overdue: ", res.Overdue)
 	}
 }
@@ -145,6 +140,7 @@ func main() {
 		grpc.WithUnaryInterceptor(unaryAuthInterceptor),
 		grpc.WithStreamInterceptor(streamAuthInterceptor),
 		grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
+		grpc.WithDefaultServiceConfig(`{"loadBalancingConfig":[{""round_robin:{}}]}`),
 	}
 	conn, err := grpc.Dial(addr, opts...)
 

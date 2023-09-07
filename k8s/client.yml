@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-client
+spec:
+  containers:
+  - name: todo-client
+    image: clementjean/grpc-go-packt-book:client
+  restartPolicy: Never

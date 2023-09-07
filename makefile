@@ -11,8 +11,10 @@ run/server:
 run/client:
 	go run ./client 0.0.0.0:50051
 
-kind/create:
-	kind create cluster --config k8s/kind.yaml
+kub/apply:
+	kubectl apply -f k8s/server.yml
+	kubectl apply -f k8s/client.yml
 
-kind/delete:
-	kind delete cluster
+kub/delete:
+	kubectl delete -f k8s/server.yml
+	kubectl delete -f k8s/client.yml
