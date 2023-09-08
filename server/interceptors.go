@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -40,4 +42,26 @@ func unaryLogInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryS
 func streamLogInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	log.Println(info.FullMethod, "called")
 	return handler(srv, ss)
+}
+
+const grpcService = 5 // "grpc.service"
+const grpcMethod = 7  //"grpc.method"
+
+func logCalls(l *log.Logger) logging.Logger {
+	return logging.LoggerFunc(func(_ context.Context, lvl logging.Level, msg string, fields ...any) {
+		switch lvl {
+		case logging.LevelDebug:
+			msg = fmt.Sprintf("DEBUG :%v", msg)
+		case logging.LevelInfo:
+			msg = fmt.Sprintf("INFO :%v", msg)
+		case logging.LevelWarn:
+			msg = fmt.Sprintf("WARN :%v", msg)
+		case logging.LevelError:
+			msg = fmt.Sprintf("ERROR :%v", msg)
+		default:
+			panic(fmt.Sprintf("unknown level %v", lvl))
+		}
+
+		l.Println(msg, fields[grpcService], fields[grpcMethod])
+	})
 }
