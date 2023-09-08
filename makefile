@@ -7,7 +7,7 @@ gen/todo:
 		proto/todo/v1/*.proto
 
 run/server:
-	go run ./server 0.0.0.0:50051
+	go run ./server 0.0.0.0:50051 0.0.0.0:50052
 
 run/client:
 	go run ./client 0.0.0.0:50051
