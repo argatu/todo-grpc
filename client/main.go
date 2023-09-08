@@ -140,7 +140,7 @@ func main() {
 		grpc.WithUnaryInterceptor(unaryAuthInterceptor),
 		grpc.WithStreamInterceptor(streamAuthInterceptor),
 		grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
-		grpc.WithDefaultServiceConfig(`{"loadBalancingConfig":[{""round_robin:{}}]}`),
+		//grpc.WithDefaultServiceConfig(`{"loadBalancingConfig":[{""round_robin:{}}]}`),
 	}
 	conn, err := grpc.Dial(addr, opts...)
 
@@ -197,6 +197,7 @@ func main() {
 	fmt.Println("--------------------")
 
 	fmt.Println("--------ERROR--------")
+	addTask(c, "", dueDate)
 	addTask(c, "not empty", time.Now().Add(-5*time.Second))
 	fmt.Println("--------------------")
 }

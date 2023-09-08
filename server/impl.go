@@ -12,12 +12,8 @@ import (
 )
 
 func (s *server) AddTask(_ context.Context, req *pb.AddTaskRequest) (*pb.AddTaskResponse, error) {
-	if len(req.Description) == 0 {
-		return nil, status.Error(codes.InvalidArgument, "description cannot be empty")
-	}
-
-	if req.DueDate.AsTime().Before(time.Now().UTC()) {
-		return nil, status.Error(codes.InvalidArgument, "due date cannot be in the past")
+	if err := req.Validate(); err != nil {
+		return nil, err
 	}
 
 	id, err := s.d.addTask(req.Description, req.DueDate.AsTime())
