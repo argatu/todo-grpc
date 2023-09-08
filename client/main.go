@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/encoding/gzip"
@@ -135,10 +136,22 @@ func main() {
 		log.Fatalf("failed to load credentials: %v", err)
 	}
 
+	retryOpts := []retry.CallOption{
+		retry.WithMax(3),
+		retry.WithBackoff(retry.BackoffExponential(100 * time.Millisecond)),
+		retry.WithCodes(codes.Unavailable),
+	}
+
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(creds),
-		grpc.WithUnaryInterceptor(unaryAuthInterceptor),
-		grpc.WithStreamInterceptor(streamAuthInterceptor),
+		grpc.WithChainUnaryInterceptor(
+			retry.UnaryClientInterceptor(retryOpts...),
+			unaryAuthInterceptor,
+		),
+		grpc.WithChainStreamInterceptor(
+			retry.StreamClientInterceptor(retryOpts...),
+			streamAuthInterceptor,
+		),
 		grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
 		//grpc.WithDefaultServiceConfig(`{"loadBalancingConfig":[{""round_robin:{}}]}`),
 	}
