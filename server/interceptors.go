@@ -14,33 +14,22 @@ const (
 	authTokenValue string = "authd"
 )
 
-func validateAuthToken(ctx context.Context) error {
-	md, _ := metadata.FromIncomingContext(ctx)
+func validateAuthToken(ctx context.Context) (context.Context, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "metadata is missing")
+	}
 	if t, ok := md[authTokenKey]; ok {
 		switch {
 		case len(t) != 1:
-			return status.Error(codes.InvalidArgument, "auth_token should contain only one value")
+			return nil, status.Error(codes.InvalidArgument, "auth_token should contain only one value")
 		case t[0] != authTokenValue:
-			return status.Error(codes.Unauthenticated, "incorrect auth_token")
+			return nil, status.Error(codes.Unauthenticated, "incorrect auth_token")
 		}
 	} else {
-		return status.Error(codes.Unauthenticated, "auth_token is missing")
+		return nil, status.Error(codes.Unauthenticated, "auth_token is missing")
 	}
-	return nil
-}
-
-func unaryAuthInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-	if err := validateAuthToken(ctx); err != nil {
-		return nil, err
-	}
-	return handler(ctx, req)
-}
-
-func streamAuthInterceptor(srv any, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-	if err := validateAuthToken(stream.Context()); err != nil {
-		return err
-	}
-	return handler(srv, stream)
+	return ctx, nil
 }
 
 func unaryLogInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
