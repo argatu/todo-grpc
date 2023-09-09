@@ -644,51 +644,57 @@ var _ interface {
 	ErrorName() string
 } = ListTasksResponseValidationError{}
 
-// Validate checks the field values on UpdateTaskRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *UpdateTaskRequest) Validate() error {
+// Validate checks the field values on UpdateTasksRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UpdateTasksRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UpdateTaskRequest with the rules
+// ValidateAll checks the field values on UpdateTasksRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// UpdateTaskRequestMultiError, or nil if none found.
-func (m *UpdateTaskRequest) ValidateAll() error {
+// UpdateTasksRequestMultiError, or nil if none found.
+func (m *UpdateTasksRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UpdateTaskRequest) validate(all bool) error {
+func (m *UpdateTasksRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
+	// no validation rules for Id
+
+	// no validation rules for Description
+
+	// no validation rules for Done
+
 	if all {
-		switch v := interface{}(m.GetTask()).(type) {
+		switch v := interface{}(m.GetDueDate()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateTaskRequestValidationError{
-					field:  "Task",
+				errors = append(errors, UpdateTasksRequestValidationError{
+					field:  "DueDate",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateTaskRequestValidationError{
-					field:  "Task",
+				errors = append(errors, UpdateTasksRequestValidationError{
+					field:  "DueDate",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetTask()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetDueDate()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return UpdateTaskRequestValidationError{
-				field:  "Task",
+			return UpdateTasksRequestValidationError{
+				field:  "DueDate",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -696,19 +702,19 @@ func (m *UpdateTaskRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return UpdateTaskRequestMultiError(errors)
+		return UpdateTasksRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// UpdateTaskRequestMultiError is an error wrapping multiple validation errors
-// returned by UpdateTaskRequest.ValidateAll() if the designated constraints
+// UpdateTasksRequestMultiError is an error wrapping multiple validation errors
+// returned by UpdateTasksRequest.ValidateAll() if the designated constraints
 // aren't met.
-type UpdateTaskRequestMultiError []error
+type UpdateTasksRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UpdateTaskRequestMultiError) Error() string {
+func (m UpdateTasksRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -717,11 +723,11 @@ func (m UpdateTaskRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UpdateTaskRequestMultiError) AllErrors() []error { return m }
+func (m UpdateTasksRequestMultiError) AllErrors() []error { return m }
 
-// UpdateTaskRequestValidationError is the validation error returned by
-// UpdateTaskRequest.Validate if the designated constraints aren't met.
-type UpdateTaskRequestValidationError struct {
+// UpdateTasksRequestValidationError is the validation error returned by
+// UpdateTasksRequest.Validate if the designated constraints aren't met.
+type UpdateTasksRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -729,24 +735,24 @@ type UpdateTaskRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e UpdateTaskRequestValidationError) Field() string { return e.field }
+func (e UpdateTasksRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UpdateTaskRequestValidationError) Reason() string { return e.reason }
+func (e UpdateTasksRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UpdateTaskRequestValidationError) Cause() error { return e.cause }
+func (e UpdateTasksRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UpdateTaskRequestValidationError) Key() bool { return e.key }
+func (e UpdateTasksRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UpdateTaskRequestValidationError) ErrorName() string {
-	return "UpdateTaskRequestValidationError"
+func (e UpdateTasksRequestValidationError) ErrorName() string {
+	return "UpdateTasksRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UpdateTaskRequestValidationError) Error() string {
+func (e UpdateTasksRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -758,14 +764,14 @@ func (e UpdateTaskRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUpdateTaskRequest.%s: %s%s",
+		"invalid %sUpdateTasksRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UpdateTaskRequestValidationError{}
+var _ error = UpdateTasksRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -773,24 +779,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UpdateTaskRequestValidationError{}
+} = UpdateTasksRequestValidationError{}
 
-// Validate checks the field values on UpdateTaskResponse with the rules
+// Validate checks the field values on UpdateTasksResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UpdateTaskResponse) Validate() error {
+func (m *UpdateTasksResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UpdateTaskResponse with the rules
+// ValidateAll checks the field values on UpdateTasksResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// UpdateTaskResponseMultiError, or nil if none found.
-func (m *UpdateTaskResponse) ValidateAll() error {
+// UpdateTasksResponseMultiError, or nil if none found.
+func (m *UpdateTasksResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UpdateTaskResponse) validate(all bool) error {
+func (m *UpdateTasksResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -798,19 +804,19 @@ func (m *UpdateTaskResponse) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return UpdateTaskResponseMultiError(errors)
+		return UpdateTasksResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// UpdateTaskResponseMultiError is an error wrapping multiple validation errors
-// returned by UpdateTaskResponse.ValidateAll() if the designated constraints
-// aren't met.
-type UpdateTaskResponseMultiError []error
+// UpdateTasksResponseMultiError is an error wrapping multiple validation
+// errors returned by UpdateTasksResponse.ValidateAll() if the designated
+// constraints aren't met.
+type UpdateTasksResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UpdateTaskResponseMultiError) Error() string {
+func (m UpdateTasksResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -819,11 +825,11 @@ func (m UpdateTaskResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UpdateTaskResponseMultiError) AllErrors() []error { return m }
+func (m UpdateTasksResponseMultiError) AllErrors() []error { return m }
 
-// UpdateTaskResponseValidationError is the validation error returned by
-// UpdateTaskResponse.Validate if the designated constraints aren't met.
-type UpdateTaskResponseValidationError struct {
+// UpdateTasksResponseValidationError is the validation error returned by
+// UpdateTasksResponse.Validate if the designated constraints aren't met.
+type UpdateTasksResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -831,24 +837,24 @@ type UpdateTaskResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e UpdateTaskResponseValidationError) Field() string { return e.field }
+func (e UpdateTasksResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UpdateTaskResponseValidationError) Reason() string { return e.reason }
+func (e UpdateTasksResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UpdateTaskResponseValidationError) Cause() error { return e.cause }
+func (e UpdateTasksResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UpdateTaskResponseValidationError) Key() bool { return e.key }
+func (e UpdateTasksResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UpdateTaskResponseValidationError) ErrorName() string {
-	return "UpdateTaskResponseValidationError"
+func (e UpdateTasksResponseValidationError) ErrorName() string {
+	return "UpdateTasksResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UpdateTaskResponseValidationError) Error() string {
+func (e UpdateTasksResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -860,14 +866,14 @@ func (e UpdateTaskResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUpdateTaskResponse.%s: %s%s",
+		"invalid %sUpdateTasksResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UpdateTaskResponseValidationError{}
+var _ error = UpdateTasksResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -875,24 +881,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UpdateTaskResponseValidationError{}
+} = UpdateTasksResponseValidationError{}
 
-// Validate checks the field values on DeleteTaskRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *DeleteTaskRequest) Validate() error {
+// Validate checks the field values on DeleteTasksRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeleteTasksRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteTaskRequest with the rules
+// ValidateAll checks the field values on DeleteTasksRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// DeleteTaskRequestMultiError, or nil if none found.
-func (m *DeleteTaskRequest) ValidateAll() error {
+// DeleteTasksRequestMultiError, or nil if none found.
+func (m *DeleteTasksRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteTaskRequest) validate(all bool) error {
+func (m *DeleteTasksRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -902,19 +908,19 @@ func (m *DeleteTaskRequest) validate(all bool) error {
 	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return DeleteTaskRequestMultiError(errors)
+		return DeleteTasksRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteTaskRequestMultiError is an error wrapping multiple validation errors
-// returned by DeleteTaskRequest.ValidateAll() if the designated constraints
+// DeleteTasksRequestMultiError is an error wrapping multiple validation errors
+// returned by DeleteTasksRequest.ValidateAll() if the designated constraints
 // aren't met.
-type DeleteTaskRequestMultiError []error
+type DeleteTasksRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteTaskRequestMultiError) Error() string {
+func (m DeleteTasksRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -923,11 +929,11 @@ func (m DeleteTaskRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteTaskRequestMultiError) AllErrors() []error { return m }
+func (m DeleteTasksRequestMultiError) AllErrors() []error { return m }
 
-// DeleteTaskRequestValidationError is the validation error returned by
-// DeleteTaskRequest.Validate if the designated constraints aren't met.
-type DeleteTaskRequestValidationError struct {
+// DeleteTasksRequestValidationError is the validation error returned by
+// DeleteTasksRequest.Validate if the designated constraints aren't met.
+type DeleteTasksRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -935,24 +941,24 @@ type DeleteTaskRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteTaskRequestValidationError) Field() string { return e.field }
+func (e DeleteTasksRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteTaskRequestValidationError) Reason() string { return e.reason }
+func (e DeleteTasksRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteTaskRequestValidationError) Cause() error { return e.cause }
+func (e DeleteTasksRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteTaskRequestValidationError) Key() bool { return e.key }
+func (e DeleteTasksRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteTaskRequestValidationError) ErrorName() string {
-	return "DeleteTaskRequestValidationError"
+func (e DeleteTasksRequestValidationError) ErrorName() string {
+	return "DeleteTasksRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e DeleteTaskRequestValidationError) Error() string {
+func (e DeleteTasksRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -964,14 +970,14 @@ func (e DeleteTaskRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteTaskRequest.%s: %s%s",
+		"invalid %sDeleteTasksRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteTaskRequestValidationError{}
+var _ error = DeleteTasksRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -979,24 +985,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteTaskRequestValidationError{}
+} = DeleteTasksRequestValidationError{}
 
-// Validate checks the field values on DeleteTaskResponse with the rules
+// Validate checks the field values on DeleteTasksResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *DeleteTaskResponse) Validate() error {
+func (m *DeleteTasksResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteTaskResponse with the rules
+// ValidateAll checks the field values on DeleteTasksResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// DeleteTaskResponseMultiError, or nil if none found.
-func (m *DeleteTaskResponse) ValidateAll() error {
+// DeleteTasksResponseMultiError, or nil if none found.
+func (m *DeleteTasksResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteTaskResponse) validate(all bool) error {
+func (m *DeleteTasksResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1004,19 +1010,19 @@ func (m *DeleteTaskResponse) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return DeleteTaskResponseMultiError(errors)
+		return DeleteTasksResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteTaskResponseMultiError is an error wrapping multiple validation errors
-// returned by DeleteTaskResponse.ValidateAll() if the designated constraints
-// aren't met.
-type DeleteTaskResponseMultiError []error
+// DeleteTasksResponseMultiError is an error wrapping multiple validation
+// errors returned by DeleteTasksResponse.ValidateAll() if the designated
+// constraints aren't met.
+type DeleteTasksResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteTaskResponseMultiError) Error() string {
+func (m DeleteTasksResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1025,11 +1031,11 @@ func (m DeleteTaskResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteTaskResponseMultiError) AllErrors() []error { return m }
+func (m DeleteTasksResponseMultiError) AllErrors() []error { return m }
 
-// DeleteTaskResponseValidationError is the validation error returned by
-// DeleteTaskResponse.Validate if the designated constraints aren't met.
-type DeleteTaskResponseValidationError struct {
+// DeleteTasksResponseValidationError is the validation error returned by
+// DeleteTasksResponse.Validate if the designated constraints aren't met.
+type DeleteTasksResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1037,24 +1043,24 @@ type DeleteTaskResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteTaskResponseValidationError) Field() string { return e.field }
+func (e DeleteTasksResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteTaskResponseValidationError) Reason() string { return e.reason }
+func (e DeleteTasksResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteTaskResponseValidationError) Cause() error { return e.cause }
+func (e DeleteTasksResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteTaskResponseValidationError) Key() bool { return e.key }
+func (e DeleteTasksResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteTaskResponseValidationError) ErrorName() string {
-	return "DeleteTaskResponseValidationError"
+func (e DeleteTasksResponseValidationError) ErrorName() string {
+	return "DeleteTasksResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e DeleteTaskResponseValidationError) Error() string {
+func (e DeleteTasksResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1066,14 +1072,14 @@ func (e DeleteTaskResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteTaskResponse.%s: %s%s",
+		"invalid %sDeleteTasksResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteTaskResponseValidationError{}
+var _ error = DeleteTasksResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1081,4 +1087,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteTaskResponseValidationError{}
+} = DeleteTasksResponseValidationError{}

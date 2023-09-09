@@ -31,23 +31,26 @@ message ListTasksResponse {
     bool overdue = 2;
 }
 
-message UpdateTaskRequest {
-    Task task = 1;
+message UpdateTasksRequest {
+    uint64 id = 1;
+    string description = 2;
+    bool done = 3;
+    google.protobuf.Timestamp due_date = 4;
 }
 
-message UpdateTaskResponse {
+message UpdateTasksResponse {
 }
 
-message DeleteTaskRequest {
+message DeleteTasksRequest {
     uint64 id = 1;
 }
 
-message DeleteTaskResponse {
+message DeleteTasksResponse {
 }
 
 service TodoService {
     rpc AddTask(AddTaskRequest) returns (AddTaskResponse);
     rpc ListTasks(ListTasksRequest) returns (stream ListTasksResponse);
-    rpc UpdateTasks(stream UpdateTaskRequest) returns (UpdateTaskResponse);
-    rpc DeleteTasks(stream DeleteTaskRequest) returns (stream DeleteTaskResponse);
+    rpc UpdateTasks(stream UpdateTasksRequest) returns (UpdateTasksResponse);
+    rpc DeleteTasks(stream DeleteTasksRequest) returns (stream DeleteTasksResponse);
 }

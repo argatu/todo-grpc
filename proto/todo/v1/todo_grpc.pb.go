@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.12.4
-// source: proto/todo/v1/todo.proto
+// source: todo/v1/todo.proto
 
 package v1
 
@@ -94,8 +94,8 @@ func (c *todoServiceClient) UpdateTasks(ctx context.Context, opts ...grpc.CallOp
 }
 
 type TodoService_UpdateTasksClient interface {
-	Send(*UpdateTaskRequest) error
-	CloseAndRecv() (*UpdateTaskResponse, error)
+	Send(*UpdateTasksRequest) error
+	CloseAndRecv() (*UpdateTasksResponse, error)
 	grpc.ClientStream
 }
 
@@ -103,15 +103,15 @@ type todoServiceUpdateTasksClient struct {
 	grpc.ClientStream
 }
 
-func (x *todoServiceUpdateTasksClient) Send(m *UpdateTaskRequest) error {
+func (x *todoServiceUpdateTasksClient) Send(m *UpdateTasksRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *todoServiceUpdateTasksClient) CloseAndRecv() (*UpdateTaskResponse, error) {
+func (x *todoServiceUpdateTasksClient) CloseAndRecv() (*UpdateTasksResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(UpdateTaskResponse)
+	m := new(UpdateTasksResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -128,8 +128,8 @@ func (c *todoServiceClient) DeleteTasks(ctx context.Context, opts ...grpc.CallOp
 }
 
 type TodoService_DeleteTasksClient interface {
-	Send(*DeleteTaskRequest) error
-	Recv() (*DeleteTaskResponse, error)
+	Send(*DeleteTasksRequest) error
+	Recv() (*DeleteTasksResponse, error)
 	grpc.ClientStream
 }
 
@@ -137,12 +137,12 @@ type todoServiceDeleteTasksClient struct {
 	grpc.ClientStream
 }
 
-func (x *todoServiceDeleteTasksClient) Send(m *DeleteTaskRequest) error {
+func (x *todoServiceDeleteTasksClient) Send(m *DeleteTasksRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *todoServiceDeleteTasksClient) Recv() (*DeleteTaskResponse, error) {
-	m := new(DeleteTaskResponse)
+func (x *todoServiceDeleteTasksClient) Recv() (*DeleteTasksResponse, error) {
+	m := new(DeleteTasksResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -233,8 +233,8 @@ func _TodoService_UpdateTasks_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type TodoService_UpdateTasksServer interface {
-	SendAndClose(*UpdateTaskResponse) error
-	Recv() (*UpdateTaskRequest, error)
+	SendAndClose(*UpdateTasksResponse) error
+	Recv() (*UpdateTasksRequest, error)
 	grpc.ServerStream
 }
 
@@ -242,12 +242,12 @@ type todoServiceUpdateTasksServer struct {
 	grpc.ServerStream
 }
 
-func (x *todoServiceUpdateTasksServer) SendAndClose(m *UpdateTaskResponse) error {
+func (x *todoServiceUpdateTasksServer) SendAndClose(m *UpdateTasksResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *todoServiceUpdateTasksServer) Recv() (*UpdateTaskRequest, error) {
-	m := new(UpdateTaskRequest)
+func (x *todoServiceUpdateTasksServer) Recv() (*UpdateTasksRequest, error) {
+	m := new(UpdateTasksRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -259,8 +259,8 @@ func _TodoService_DeleteTasks_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type TodoService_DeleteTasksServer interface {
-	Send(*DeleteTaskResponse) error
-	Recv() (*DeleteTaskRequest, error)
+	Send(*DeleteTasksResponse) error
+	Recv() (*DeleteTasksRequest, error)
 	grpc.ServerStream
 }
 
@@ -268,12 +268,12 @@ type todoServiceDeleteTasksServer struct {
 	grpc.ServerStream
 }
 
-func (x *todoServiceDeleteTasksServer) Send(m *DeleteTaskResponse) error {
+func (x *todoServiceDeleteTasksServer) Send(m *DeleteTasksResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *todoServiceDeleteTasksServer) Recv() (*DeleteTaskRequest, error) {
-	m := new(DeleteTaskRequest)
+func (x *todoServiceDeleteTasksServer) Recv() (*DeleteTasksRequest, error) {
+	m := new(DeleteTasksRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -310,5 +310,5 @@ var TodoService_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "proto/todo/v1/todo.proto",
+	Metadata: "todo/v1/todo.proto",
 }

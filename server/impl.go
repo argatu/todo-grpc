@@ -57,19 +57,25 @@ func (s *server) UpdateTasks(stream pb.TodoService_UpdateTasksServer) error {
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
-			return stream.SendAndClose(&pb.UpdateTaskResponse{})
+			return stream.SendAndClose(&pb.UpdateTasksResponse{})
 		}
 
 		if err != nil {
 			return err
 		}
 
-		s.d.updateTask(
-			req.Task.Id,
-			req.Task.Description,
-			req.Task.DueDate.AsTime(),
-			req.Task.Done,
-		)
+		if err := s.d.updateTask(
+			req.Id,
+			req.Description,
+			req.DueDate.AsTime(),
+			req.Done,
+		); err != nil {
+			return status.Errorf(
+				codes.Internal,
+				"error while updating task: %s",
+				err.Error(),
+			)
+		}
 	}
 }
 
@@ -84,8 +90,14 @@ func (s *server) DeleteTasks(stream pb.TodoService_DeleteTasksServer) error {
 			return err
 		}
 
-		s.d.deleteTask(req.Id)
+		if err := s.d.deleteTask(req.Id); err != nil {
+			return status.Errorf(
+				codes.Internal,
+				"error while deleting task: %s",
+				err.Error(),
+			)
+		}
 
-		stream.Send(&pb.DeleteTaskResponse{})
+		stream.Send(&pb.DeleteTasksResponse{})
 	}
 }
