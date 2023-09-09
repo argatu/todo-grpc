@@ -12,12 +12,6 @@ import (
 )
 
 func (s *server) AddTask(_ context.Context, req *pb.AddTaskRequest) (*pb.AddTaskResponse, error) {
-	return nil, status.Errorf(
-		codes.Unavailable,
-		"unexpected error: %s",
-		"unavailable",
-	)
-
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
